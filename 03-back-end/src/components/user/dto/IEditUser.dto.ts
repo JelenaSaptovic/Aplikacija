@@ -3,12 +3,16 @@ import IServiceData from '../../../common/IServiceData.interface';
 
 const ajv = new Ajv();
 
-export default interface IAddUser extends IServiceData{
+export default interface IEditUser extends IServiceData{
+    username: string;
+}
+
+interface IEditUserDto{
     username: string;
 }
 
 
-const AddUserSchema = {
+const EditUserSchema = {
     type: "object",
     properties: {
         username: {
@@ -24,6 +28,6 @@ const AddUserSchema = {
     additionalProperties: false,
 };
 
-const AddUserValidator = ajv.compile(AddUserSchema);
+const EditUserValidator = ajv.compile(EditUserSchema);
 
-export { AddUserValidator };
+export { EditUserValidator, IEditUserDto };

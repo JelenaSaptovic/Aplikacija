@@ -1,7 +1,7 @@
 import AdModel from "./AdModel.model";
-import * as mysql2 from 'mysql2/promise';
 import BaseService from '../../common/BaseService';
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
+import IAddAd from "./dto/IAddAd.dto";
 
 class AdAdapterOptions implements IAdapterOptions{
 
@@ -17,6 +17,7 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
         const ad: AdModel = new AdModel();
 
         ad.adId = +data?.ad_id;
+        ad.title = data?.title;
         ad.userId = data?.user_id;
 
         return ad;
@@ -26,6 +27,9 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
         return this.getAllByFieldNameAnValue('user_id', userId, options);
     }
 
+    public async add(data: IAddAd): Promise<AdModel> {
+        return this.baseAdd(data, {});
+    }
 }
 
 export default AdService;

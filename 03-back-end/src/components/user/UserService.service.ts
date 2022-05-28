@@ -1,12 +1,9 @@
 import UserModel from "./UserModel.model";
-import * as mysql2 from 'mysql2/promise';
-import { resolve } from 'path';
-import { rejects } from "assert";
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
 import AdService from '../ad/AdService.service';
 import IAddUser from './dto/IAddUser.dto';
-import { ResultSetHeader } from "mysql2/promise";
 import BaseService from '../../common/BaseService';
+import IEditUser from './dto/IEditUser.dto';
 
 interface IUserAdapterOptions extends IAdapterOptions{
     loadAd: boolean;
@@ -36,26 +33,11 @@ class UserService extends BaseService<UserModel, IUserAdapterOptions>{
     }
 
     public async add(data: IAddUser): Promise<UserModel> {
-        return new Promise<UserModel>((resolve, reject) => {
-            const sql: string = "INSERT `user` SET `username` = ?;";
-            this.db.execute(sql, [ data.username ])
-                .then(async result => {
-                    const info: any = result;
+        return this.baseAdd(data, DefaultUserAdapterOptions);
+    }
 
-                    const newUserId = +(info[0]?.insertId);
-
-                    const newUser: UserModel|null = await this.getById(newUserId, DefaultUserAdapterOptions);
-
-                    if(newUser === null) {
-                        return reject({message: 'Duplicate user name', });
-                    }
-
-                    resolve(newUser);
-                })
-                .catch(error => {
-                    reject(error);
-                });
-        });
+    public async editById(userId: number, data: IEditUser, options: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel>{
+        return this.baseEditById(userId, data, options);
     }
 }
 
