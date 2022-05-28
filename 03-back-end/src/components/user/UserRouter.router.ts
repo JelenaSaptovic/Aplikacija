@@ -12,7 +12,7 @@ class UserRouter  implements IRouter{
 
         application.get("/api/user", userController.getAll.bind(userController));
         application.get("/api/user/:id", userController.getById.bind(userController));
-
+        application.post("/api/user", userController.add.bind(userController));
     }
 }
 

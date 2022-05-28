@@ -1,5 +1,7 @@
-import UserService from './UserService.service';
+import UserService, { DefaultUserAdapterOptions } from './UserService.service';
 import { Request, Response } from "express";
+import { AddUserValidator } from './dto/IAddUser.dto';
+import IAddUser from './dto/IAddUser.dto';
 
 class UserController {
     private userService: UserService;
@@ -9,7 +11,7 @@ class UserController {
     }
 
     async getAll(req: Request, res: Response) {
-        this.userService.getAll()
+        this.userService.getAll(DefaultUserAdapterOptions)
             .then(result => {
                 res.send(result);
             })
@@ -22,7 +24,13 @@ class UserController {
     async getById(req: Request, res: Response) {
         const id: number = +req.params?.id;
 
-        this.userService.getById(id)
+        if (id === 4) {
+            throw "Neki tekst!";
+        }
+
+        this.userService.getById(id, {
+            loadAd: true
+        })
             .then(result => {
                 if (result === null){
                     return res.sendStatus(404);
@@ -31,6 +39,21 @@ class UserController {
             })
             .catch(error => {
                 res.status(500).send(error?.message);
+            });
+    }
+    async add(req: Request, res: Response){
+        const data = req.body as IAddUser;
+
+        if( !AddUserValidator(data)) {
+            return res.status(400).send(AddUserValidator.errors);
+        }
+
+        this.userService.add(data)
+            .then(result => {
+                res.send(result);
+            })
+            .catch(error => {
+                res.status(400).send(error?.message);
             });
     }
 }

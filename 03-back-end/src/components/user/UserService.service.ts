@@ -2,72 +2,62 @@ import UserModel from "./UserModel.model";
 import * as mysql2 from 'mysql2/promise';
 import { resolve } from 'path';
 import { rejects } from "assert";
+import IAdapterOptions from '../../common/IAdapterOptions.interface';
+import AdService from '../ad/AdService.service';
+import IAddUser from './dto/IAddUser.dto';
+import { ResultSetHeader } from "mysql2/promise";
+import BaseService from '../../common/BaseService';
 
-class UserService {
-    private db: mysql2.Connection;
+interface IUserAdapterOptions extends IAdapterOptions{
+    loadAd: boolean;
+}
 
-    constructor(databaseConnection: mysql2.Connection){
-        this.db = databaseConnection;
+const DefaultUserAdapterOptions: IUserAdapterOptions = {
+    loadAd: false,
+}
+class UserService extends BaseService<UserModel, IUserAdapterOptions>{
+    tableName(): string {
+        return "user";
     }
 
-    private async adaptToModel(data: any): Promise<UserModel>{
+    protected async adaptToModel(data: any, options: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel>{
         const user: UserModel = new UserModel();
 
         user.userId = +data?.user_id;
         user.username = data?.username;
 
+        if(options.loadAd){
+            const adService: AdService = new AdService(this.db);
+
+            user.ads = await adService.getAllByUserId(user.userId, {});
+        }
+
         return user;
     }
 
-    public async getAll(): Promise<UserModel[]> {
-        return new Promise<UserModel[]>(
-            (resovle, reject) => {
-                const sql: string = "SELECT * FROM `user` ORDER BY `username`;";
-                this.db.execute(sql)
-                    .then( async ([ rows ]) => {
-                        if (rows === undefined){
-                            return resovle([]);
-                        }
+    public async add(data: IAddUser): Promise<UserModel> {
+        return new Promise<UserModel>((resolve, reject) => {
+            const sql: string = "INSERT `user` SET `username` = ?;";
+            this.db.execute(sql, [ data.username ])
+                .then(async result => {
+                    const info: any = result;
 
-                        const users: UserModel[] = [];
+                    const newUserId = +(info[0]?.insertId);
 
-                        for (const row of rows as mysql2.RowDataPacket[]) {
-                            users.push(await this.adaptToModel(row)); 
-                        }
+                    const newUser: UserModel|null = await this.getById(newUserId, DefaultUserAdapterOptions);
 
-                        resovle(users);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-
-            }
-        );
-    }
-
-    public async getById(userId: number): Promise<UserModel|null> {
-        return new Promise<UserModel> (
-            (resolve, reject) => {
-                const sql: string = "SELECT * FROM `user` WHERE user_id = ?;";
-
-                this.db.execute(sql, [ userId ])
-                    .then(async ([ rows ]) => {
-                        if (rows === undefined){
-                            return resolve(null);
+                    if(newUser === null) {
+                        return reject({message: 'Duplicate user name', });
                     }
 
-                        if(Array.isArray(rows) && rows.length === 0){
-                            return resolve(null);
-                        }
-                    
-                        resolve(await this.adaptToModel(rows[0]));
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
-            }
-        );
+                    resolve(newUser);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
     }
 }
 
 export default UserService;
+export {DefaultUserAdapterOptions};
