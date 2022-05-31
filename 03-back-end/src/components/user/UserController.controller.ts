@@ -1,23 +1,16 @@
-import UserService, { DefaultUserAdapterOptions } from './UserService.service';
+import { DefaultUserAdapterOptions } from './UserService.service';
 import { Request, Response } from "express";
 import { AddUserValidator } from './dto/IAddUser.dto';
 import IAddUser from './dto/IAddUser.dto';
-import AdService from '../ad/AdService.service';
 import { AddAdValidator, IAddAdDto } from '../ad/dto/IAddAd.dto';
 import { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto';
 import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
+import BaseController from '../../common/BaseController';
 
-class UserController {
-    private userService: UserService;
-    private adService: AdService;
-
-    constructor(userService: UserService, adService: AdService) {
-        this.userService = userService;
-        this.adService = adService;
-    }
-
+class UserController extends BaseController {
+    
     async getAll(req: Request, res: Response) {
-        this.userService.getAll(DefaultUserAdapterOptions)
+        this.services.user.getAll(DefaultUserAdapterOptions)
             .then(result => {
                 res.send(result);
             })
@@ -34,7 +27,7 @@ class UserController {
             throw "Neki tekst!";
         }
 
-        this.userService.getById(id, {
+        this.services.user.getById(id, {
             loadAd: true
         })
             .then(result => {
@@ -47,6 +40,7 @@ class UserController {
                 res.status(500).send(error?.message);
             });
     }
+
     async add(req: Request, res: Response){
         const data = req.body as IAddUser;
 
@@ -54,7 +48,7 @@ class UserController {
             return res.status(400).send(AddUserValidator.errors);
         }
 
-        this.userService.add(data)
+        this.services.user.add(data)
             .then(result => {
                 res.send(result);
             })
@@ -72,13 +66,13 @@ class UserController {
             return res.status(400).send(AddUserValidator.errors);
         }
 
-        this.userService.getById(id, { loadAd: false })
+        this.services.user.getById(id, { loadAd: false })
             .then(result => {
                 if (result === null){
                     return res.sendStatus(404);
                 }
 
-                this.userService.editById(
+                this.services.user.editById(
                     id, {
                         username: data.username
                     },
@@ -106,13 +100,13 @@ class UserController {
             return res.status(400).send(AddAdValidator.errors);
         }
 
-        this.userService.getById(userId, {loadAd: true})
+        this.services.user.getById(userId, {loadAd: true})
             .then(result => {
                 if (result === null){
                     return res.sendStatus(404);
                 }
 
-                this.adService.add({
+                this.services.ad.add({
                     title: data.title,
                     user_id: userId
                 })
@@ -138,13 +132,13 @@ class UserController {
             return res.status(400).send(EditAdValidator.errors);
         }
 
-        this.userService.getById(userId, { loadAd: false })
+        this.services.user.getById(userId, { loadAd: false })
             .then(result => {
                 if (result === null){
                     return res.status(404).send('User not found!');
                 }
 
-                this.adService.getById(adId, {})
+                this.services.ad.getById(adId, {})
                 .then(result => {
                     if (result === null){
                         return res.status(404).send('Ad not found!');
@@ -154,7 +148,7 @@ class UserController {
                         return res.status(400).send('This ad does not belong to this user.');
                     }
 
-                    this.adService.editById(adId, data)
+                    this.services.ad.editById(adId, data)
                     .then(result => {
                         res.send(result);
                     });
@@ -171,13 +165,13 @@ class UserController {
         const userId: number = +req.params?.uid;
         const adId: number = +req.params?.aid;
 
-        this.userService.getById(userId, { loadAd: false })
+        this.services.user.getById(userId, { loadAd: false })
             .then(result => {
                 if (result === null){
                     return res.status(404).send('User not found!');
                 }
 
-                this.adService.getById(adId, {})
+                this.services.ad.getById(adId, {})
                 .then(result => {
                     if (result === null){
                         return res.status(404).send('Ad not found!');
@@ -187,7 +181,7 @@ class UserController {
                         return res.status(400).send('This ad does not belong to this user.');
                     }
 
-                    this.adService.deleteById(adId)
+                    this.services.ad.deleteById(adId)
                     .then(result => {
                         res.send('This ad has been deleted!');
                     });

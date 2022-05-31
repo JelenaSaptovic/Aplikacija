@@ -6,6 +6,8 @@ import * as fs from "fs";
 import * as morgan from "morgan";
 import IApplicationResources from './common/IApplicationResources.interface';
 import * as mysql2 from 'mysql2/promise';
+import AdService from './components/ad/AdService.service';
+import UserService from "./components/user/UserService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -15,18 +17,25 @@ async function main() {
         recursive: true,
     });
 
+    const db = await mysql2.createConnection({
+        host: config.database.host,
+        port: config.database.port,
+        user: config.database.user,
+        password: config.database.password,
+        database: config.database.database,
+        charset: config.database.charset,
+        timezone: config.database.timezone,
+        // supportBigNumbers: config.database.supportBigNumbers
+    });
+
     const applicationResources: IApplicationResources = {
-        databaseConnection: await mysql2.createConnection({
-            host: config.database.host,
-            port: config.database.port,
-            user: config.database.user,
-            password: config.database.password,
-            database: config.database.database,
-            charset: config.database.charset,
-            timezone: config.database.timezone,
-            // supportBigNumbers: config.database.supportBigNumbers
-        }),
-    }
+        databaseConnection: db,
+        services: {
+            user: new UserService(db),
+            ad: new AdService(db),
+            //...
+        }
+    };
 
     const application: express.Application = express();
 
