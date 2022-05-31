@@ -35,6 +35,10 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
     public async editById(adId: number, data: IEditAd): Promise<AdModel>{
         return this.baseEditById(adId, data, {});
     }
+
+    public async deleteById(adId:number): Promise<true>{
+        return this.baseDeleteById(adId);
+    }
 }
 
 export default AdService;

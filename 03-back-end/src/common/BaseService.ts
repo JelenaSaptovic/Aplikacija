@@ -170,4 +170,27 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
 
     }
 
+    protected async baseDeleteById(id: number): Promise<true> {
+        const tableName = this.tableName();
+        
+        return new Promise((resolve, reject) => {
+            const sql: string = "DELETE FROM `" + tableName + "` WHERE `" + tableName + "_id` =?;";
+        
+            this.db.execute(sql, [ id ])
+                .then(async result => {
+                    const info: any = result;
+
+                    if (info[0]?.affectedRows === 0){
+                        return reject({ message: "Could not delete this items in the" + tableName + "table!" });
+                    }
+
+                    resolve(true);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        
+        });
+    }
+
 } 

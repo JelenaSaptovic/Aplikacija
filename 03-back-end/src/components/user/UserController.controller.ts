@@ -166,6 +166,38 @@ class UserController {
         });
             
     }
+
+    async deleteAd (req: Request, res: Response){
+        const userId: number = +req.params?.uid;
+        const adId: number = +req.params?.aid;
+
+        this.userService.getById(userId, { loadAd: false })
+            .then(result => {
+                if (result === null){
+                    return res.status(404).send('User not found!');
+                }
+
+                this.adService.getById(adId, {})
+                .then(result => {
+                    if (result === null){
+                        return res.status(404).send('Ad not found!');
+                    }
+
+                    if (result.userId !== userId) {
+                        return res.status(400).send('This ad does not belong to this user.');
+                    }
+
+                    this.adService.deleteById(adId)
+                    .then(result => {
+                        res.send('This ad has been deleted!');
+                    });
+    
+                });
+            })
+            .catch(error => {
+                res.status(500).send(error.message);
+        });
+    }
 }
 
 export default UserController;
