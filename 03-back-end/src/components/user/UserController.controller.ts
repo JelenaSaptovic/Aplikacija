@@ -5,6 +5,7 @@ import IAddUser from './dto/IAddUser.dto';
 import AdService from '../ad/AdService.service';
 import { AddAdValidator, IAddAdDto } from '../ad/dto/IAddAd.dto';
 import { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto';
+import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
 
 class UserController {
     private userService: UserService;
@@ -125,6 +126,45 @@ class UserController {
             .catch(error => {
                 res.status(500).send(error?.message);
             });
+    }
+
+    async editAd(req: Request, res: Response){
+        const userId: number = +req.params?.uid;
+        const adId: number = +req.params?.aid;
+
+        const data: IEditAdDto = req.body as IEditAdDto;
+
+        if (!EditAdValidator(data)){
+            return res.status(400).send(EditAdValidator.errors);
+        }
+
+        this.userService.getById(userId, { loadAd: false })
+            .then(result => {
+                if (result === null){
+                    return res.status(404).send('User not found!');
+                }
+
+                this.adService.getById(adId, {})
+                .then(result => {
+                    if (result === null){
+                        return res.status(404).send('Ad not found!');
+                    }
+
+                    if (result.userId !== userId) {
+                        return res.status(400).send('This ad does not belong to this user.');
+                    }
+
+                    this.adService.editById(adId, data)
+                    .then(result => {
+                        res.send(result);
+                    });
+    
+                });
+            })
+            .catch(error => {
+                res.status(500).send(error.message);
+        });
+            
     }
 }
 

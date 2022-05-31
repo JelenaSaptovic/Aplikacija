@@ -2,6 +2,7 @@ import AdModel from "./AdModel.model";
 import BaseService from '../../common/BaseService';
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
 import IAddAd from "./dto/IAddAd.dto";
+import IEditAd from './dto/IEditAd.dto';
 
 class AdAdapterOptions implements IAdapterOptions{
 
@@ -29,6 +30,10 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
 
     public async add(data: IAddAd): Promise<AdModel> {
         return this.baseAdd(data, {});
+    }
+
+    public async editById(adId: number, data: IEditAd): Promise<AdModel>{
+        return this.baseEditById(adId, data, {});
     }
 }
 
