@@ -19,6 +19,14 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
 
         ad.adId = +data?.ad_id;
         ad.title = data?.title;
+        ad.description = data?.description;
+        ad.description = data?.description;
+        ad.expiresAt = data?.expires_at;
+        ad.price = data?.price;
+        ad.flowerKind = data?.flower_kind;
+        ad.color = data?.color;
+        ad.country = data?.country;
+        ad.lifeSpan = data?.life_span;
         ad.userId = data?.user_id;
 
         return ad;

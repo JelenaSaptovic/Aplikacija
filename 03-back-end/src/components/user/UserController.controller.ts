@@ -6,6 +6,8 @@ import IEditUser, { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto'
 import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
 import BaseController from '../../common/BaseController';
 import * as bcrypt from "bcrypt";
+import IEditAd from '../ad/dto/IEditAd.dto';
+
 
 class UserController extends BaseController {
     
@@ -121,6 +123,12 @@ class UserController extends BaseController {
 
                 this.services.ad.add({
                     title: data.title,
+                    description: data.description,
+                    price: data.price,
+                    flower_kind: data.flowerKind,
+                    color: data.color,
+                    country: data.country,
+                    life_span: data.lifeSpan,
                     user_id: userId
                 })
                     .then(result => {
@@ -150,6 +158,7 @@ class UserController extends BaseController {
                 if (result === null){
                     return res.status(404).send('User not found!');
                 }
+
 
                 this.services.ad.getById(adId, {})
                 .then(result => {

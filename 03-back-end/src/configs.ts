@@ -1,4 +1,5 @@
 import IConfig from "./common/IConfig.interface";
+import AdRouter from "./components/ad/AdRouter.router";
 import UserRouter from './components/user/UserRouter.router';
 
 const DevConfig: IConfig = {
@@ -31,6 +32,7 @@ const DevConfig: IConfig = {
     },
     routers: [
         new UserRouter(),
+        new AdRouter(),
     ]
 };
 
