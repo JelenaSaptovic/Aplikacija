@@ -30,14 +30,16 @@ async function main() {
 
     const applicationResources: IApplicationResources = {
         databaseConnection: db,
+        services: {
+            user: null,
+            ad: null,
+        }
     };
 
-    applicationResources.services = {
-        user: new UserService(applicationResources),
-        ad: new AdService(applicationResources),
+    applicationResources.services.user = new UserService(applicationResources);
+    applicationResources.services.ad = new AdService(applicationResources);
         // ...
-    };
-
+    
     const application: express.Application = express();
 
     application.use(morgan(config.logging.format, {
