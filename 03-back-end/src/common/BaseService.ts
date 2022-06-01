@@ -2,16 +2,24 @@ import * as mysql2 from 'mysql2/promise';
 import IModel from './IModel.interface';
 import IAdapterOptions from './IAdapterOptions.interface';
 import IServiceData from './IServiceData.interface';
+import { IServices } from './IApplicationResources.interface';
+import IApplicationResources from './IApplicationResources.interface';
 
 export default abstract class BaseService<ReturnModel extends IModel, AdapterOptions extends IAdapterOptions>{
     private database: mysql2.Connection;
+    private serviceInstances: IServices;
 
-    constructor(databaseConnection: mysql2.Connection){
-        this.database = databaseConnection;
+    constructor(resources: IApplicationResources){
+        this.database = resources.databaseConnection;
+        this.serviceInstances = resources.services;
     }
 
     protected get db(): mysql2.Connection{
         return this.database;
+    }
+
+    protected get services(): IServices {
+        return this.serviceInstances;
     }
 
     abstract tableName(): string;
@@ -142,6 +150,7 @@ export default abstract class BaseService<ReturnModel extends IModel, AdapterOpt
 
         return new Promise ((resolve, reject) => {
             const properties = Object.getOwnPropertyNames(data);
+            
             const sqlPairs = properties.map(property => "`" + property + "` = ?").join(", ");
             const values = properties.map(property => data[property]);
             values.push(id); // za + tableName + "_id` = ?;"

@@ -22,14 +22,16 @@ class UserService extends BaseService<UserModel, IUserAdapterOptions>{
 
         user.userId = +data?.user_id;
         user.username = data?.username;
+        user.passwordHash = data?.password_hash;
+        user.isActive = +data?.is_active === 1;
+
 
         if(options.loadAd){
-            const adService: AdService = new AdService(this.db);
-
-            user.ads = await adService.getAllByUserId(user.userId, {});
+            user.ads = await this.services.ad.getAllByUserId(user.userId, {});
         }
 
         return user;
+
     }
 
     public async add(data: IAddUser): Promise<UserModel> {

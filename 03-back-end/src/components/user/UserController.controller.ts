@@ -1,11 +1,11 @@
 import { DefaultUserAdapterOptions } from './UserService.service';
 import { Request, Response } from "express";
-import { AddUserValidator } from './dto/IAddUser.dto';
-import IAddUser from './dto/IAddUser.dto';
+import { AddUserValidator, IAddUserDto } from './dto/IAddUser.dto';
 import { AddAdValidator, IAddAdDto } from '../ad/dto/IAddAd.dto';
-import { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto';
+import IEditUser, { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto';
 import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
 import BaseController from '../../common/BaseController';
+import * as bcrypt from "bcrypt";
 
 class UserController extends BaseController {
     
@@ -42,13 +42,18 @@ class UserController extends BaseController {
     }
 
     async add(req: Request, res: Response){
-        const data = req.body as IAddUser;
+        const body = req.body as IAddUserDto;
 
-        if( !AddUserValidator(data)) {
+        if( !AddUserValidator(body)) {
             return res.status(400).send(AddUserValidator.errors);
         }
 
-        this.services.user.add(data)
+        const passwordHash = bcrypt.hashSync(body.password, 10);
+
+        this.services.user.add({
+            username: body.username,
+            password_hash: passwordHash,
+        })
             .then(result => {
                 res.send(result);
             })
@@ -72,13 +77,21 @@ class UserController extends BaseController {
                     return res.sendStatus(404);
                 }
 
+                const passwordHash = bcrypt.hashSync(data.password, 10);
+
+                const serviceData: IEditUser = {
+                    password_hash: passwordHash
+                };
+
+                if (data.isActive !== undefined){
+                    serviceData.is_active = data.isActive ? 1 : 0;
+                }
+
                 this.services.user.editById(
-                    id, {
-                        username: data.username
-                    },
+                    id, serviceData,
                     {
                         loadAd: true,
-                    }
+                    }               
                 )
                 .then(result => {
                     res.send(result);
@@ -132,7 +145,7 @@ class UserController extends BaseController {
             return res.status(400).send(EditAdValidator.errors);
         }
 
-        this.services.user.getById(userId, { loadAd: false })
+        this.services.user.getById(userId, { loadAd: false})
             .then(result => {
                 if (result === null){
                     return res.status(404).send('User not found!');

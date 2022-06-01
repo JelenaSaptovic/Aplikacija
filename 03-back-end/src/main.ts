@@ -30,11 +30,12 @@ async function main() {
 
     const applicationResources: IApplicationResources = {
         databaseConnection: db,
-        services: {
-            user: new UserService(db),
-            ad: new AdService(db),
-            //...
-        }
+    };
+
+    applicationResources.services = {
+        user: new UserService(applicationResources),
+        ad: new AdService(applicationResources),
+        // ...
     };
 
     const application: express.Application = express();

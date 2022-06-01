@@ -4,26 +4,30 @@ import IServiceData from '../../../common/IServiceData.interface';
 const ajv = new Ajv();
 
 export default interface IEditUser extends IServiceData{
-    username: string;
+    password_hash: string;
+    is_active?: number;
 }
 
 interface IEditUserDto{
-    username: string;
+    password: string;
+    isActive?: boolean;
 }
 
 
 const EditUserSchema = {
     type: "object",
     properties: {
-        username: {
+        password: {
             type: "string",
-            minLength: 4,
-            maxLength: 32,
+            pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$",
+        },
+        isActive: {
+            type: "boolean",
         }
 
     },
     required: [
-        "username",
+        "password",
     ],
     additionalProperties: false,
 };
