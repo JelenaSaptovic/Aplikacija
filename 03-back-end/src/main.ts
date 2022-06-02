@@ -8,6 +8,8 @@ import IApplicationResources from './common/IApplicationResources.interface';
 import * as mysql2 from 'mysql2/promise';
 import AdService from './components/ad/AdService.service';
 import UserService from "./components/user/UserService.service";
+import fileUpload = require("express-fileupload");
+import PhotoService from "./components/photo/PhotoService.service";
 
 async function main() {
     const config: IConfig = DevConfig;
@@ -33,12 +35,15 @@ async function main() {
         services: {
             user: null,
             ad: null,
+            photo: null,
         }
     };
 
     applicationResources.services.user = new UserService(applicationResources);
     applicationResources.services.ad = new AdService(applicationResources);
-        // ...
+    applicationResources.services.photo = new PhotoService(applicationResources);
+ 
+    // ...
     
     const application: express.Application = express();
 
@@ -47,6 +52,22 @@ async function main() {
     }));
 
     application.use(cors());
+
+    application.use(express.urlencoded({ extended: true, }));
+    application.use(fileUpload({
+        limits: {
+            files: config.fileUploads.maxFiles,
+            fileSize: config.fileUploads.maxFileSize,
+        },
+        abortOnLimit: true,
+
+        useTempFiles: true,
+        tempFileDir: config.fileUploads.temporaryFileDirectory, 
+        createParentPath: true,
+        safeFileNames: true,
+        preserveExtension: true,
+    }));
+
     application.use(express.json());
 
     application.use(config.server.static.route, express.static(config.server.static.path, {

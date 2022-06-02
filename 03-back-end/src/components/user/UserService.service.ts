@@ -1,6 +1,5 @@
 import UserModel from "./UserModel.model";
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
-import AdService from '../ad/AdService.service';
 import IAddUser from './dto/IAddUser.dto';
 import BaseService from '../../common/BaseService';
 import IEditUser from './dto/IEditUser.dto';

@@ -33,7 +33,26 @@ const DevConfig: IConfig = {
     routers: [
         new UserRouter(),
         new AdRouter(),
-    ]
+    ],
+    fileUploads: {
+        maxFiles: 5,
+        maxFileSize: 5 * 1024 * 1024,
+        temporaryFileDirectory: "../temp/",
+        destinationDirectoryRoot: "uploads/",
+        photos: {
+            allowedTypes: [ "png", "jpg" ],
+            allowedExtensions: [ ".png", ".jpg" ],
+            width: {
+                min: 320,
+                max: 1920,
+            },
+            height: {
+                min: 240,
+                max: 1080,
+            },
+        },
+
+    }
 };
 
 export { DevConfig };

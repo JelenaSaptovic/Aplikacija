@@ -6,7 +6,6 @@ import IEditUser, { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto'
 import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
 import BaseController from '../../common/BaseController';
 import * as bcrypt from "bcrypt";
-import IEditAd from '../ad/dto/IEditAd.dto';
 
 
 class UserController extends BaseController {
