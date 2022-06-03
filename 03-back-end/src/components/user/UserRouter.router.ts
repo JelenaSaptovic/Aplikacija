@@ -21,6 +21,7 @@ class UserRouter  implements IRouter{
         application.get("/api/user/:uid/ad/:aid", adController.getAdById.bind(adController));
         application.delete("/api/user/:uid/ad/:aid", userController.deleteAd.bind(userController));
         application.post("/api/user/:uid/ad/:aid/photo", adController.uploadPhoto.bind(adController));
+        application.delete("/api/user/:uid/ad/:aid/photo/:pid", adController.deletePhoto.bind(adController));
 
 
     }

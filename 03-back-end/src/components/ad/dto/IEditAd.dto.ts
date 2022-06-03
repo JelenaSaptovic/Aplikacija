@@ -8,7 +8,7 @@ export interface IEditAdDto{
     description?: string;
     price?: number;
     color?: string;
-    country?: string;
+    country?: string; 
 }
 
 export default interface IEditAd extends IServiceData{

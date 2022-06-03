@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { mkdirSync, readFileSync, unlinkSync } from "fs";
 import { UploadedFile } from "express-fileupload";
 import filetype from "magic-bytes.js";
-import { extname, basename } from "path";
+import { extname, basename, dirname } from "path";
 import sizeOf from "image-size";
 import * as uuid from "uuid";
 import PhotoModel from '../photo/PhotoModel.model';
@@ -11,12 +11,13 @@ import IConfig from "../../common/IConfig.interface";
 import { DevConfig } from "../../configs";
 import { IResize } from '../../common/IConfig.interface';
 import * as sharp from "sharp";
+import { DefaultUserAdapterOptions } from "../user/UserService.service";
 
 
 export default class AdController extends BaseController {
     
     async getAll(req: Request, res: Response) {
-        this.services.ad.getAll({})
+        this.services.ad.getAll({ loadPhotos: true})
             .then(result => {
                 res.send(result);
             })
@@ -36,7 +37,7 @@ export default class AdController extends BaseController {
                     return res.status(404).send('User not found!');
                 }
 
-                this.services.ad.getById(adId, {})
+                this.services.ad.getById(adId, { loadPhotos : true })
                 .then(result => {
                     if (result === null){
                         return res.status(404).send('Ad not found!');
@@ -214,6 +215,57 @@ export default class AdController extends BaseController {
                 withoutEnlargement: true,
             })
             .toFile(config.server.static.path + "/" + directory + resizeOptions.prefix + filename);
+
+    }
+
+    async deletePhoto(req: Request, res: Response){
+        const userId: number = +(req.params?.uid);
+        const adId: number = +(req.params?.aid);
+        const photoId: number = +(req.params?.pid);
+
+        this.services.user.getById(userId, DefaultUserAdapterOptions)
+            .then(result => {
+                if (result === null) throw { status: 404, message: "User not found!"};
+                return result;
+            })
+            .then(async user => {
+                return {
+                    user: user,
+                    ad: await this.services.ad.getById(adId, { loadPhotos: true}),
+
+                };
+            })
+            .then ( ({ user, ad }) => {
+                if (ad === null ) throw { status: 404, message: "Ad not found!" };
+                if (ad.userId !== user.userId) throw { status: 404, message: "Ad not found for this user!" };
+                return ad;
+            })
+            .then (ad => {
+                const photo = ad.photos?.find(photo => photo.photoId === photoId);
+                if (!photo) throw { status: 404, message: "Photo not found in this ad!" };
+                return photo;
+            })
+            .then(async photo => {
+                await this.services.photo.deleteById(photo.photoId);
+                return photo;
+            })
+            .then (photo => {    
+                const directoryPart = DevConfig.server.static.path + "/" + dirname(photo.filePath);
+                const fileName = basename(photo.filePath);
+
+                for(let resize of DevConfig.fileUploads.photos.resize){
+                    const filePath = directoryPart + "/" + resize.prefix + fileName;
+                    unlinkSync(filePath);
+                }
+
+                unlinkSync(DevConfig.server.static.path + "/" + photo.filePath);
+
+                res.send("Photo deleted");
+            })
+
+            .catch(error => {
+                res.status(error?.status ?? 500).send(error?.message ?? "Server side error!");
+            })
 
     }
 }   

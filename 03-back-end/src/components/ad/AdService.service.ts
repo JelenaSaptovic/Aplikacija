@@ -3,9 +3,14 @@ import BaseService from '../../common/BaseService';
 import IAdapterOptions from '../../common/IAdapterOptions.interface';
 import IAddAd from "./dto/IAddAd.dto";
 import IEditAd from './dto/IEditAd.dto';
+import { resolve } from "path";
 
-class AdAdapterOptions implements IAdapterOptions{
+export interface AdAdapterOptions extends IAdapterOptions{
+    loadPhotos: boolean,
+}
 
+export const DefaultAdAdapterOptions: AdAdapterOptions = {
+    loadPhotos: false,
 }
 
 class AdService extends BaseService<AdModel, AdAdapterOptions>{
@@ -14,7 +19,9 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
         return "ad";
     }
 
-    protected async adaptToModel(data: any): Promise<AdModel>{
+    protected async adaptToModel(data: any, options: AdAdapterOptions): Promise<AdModel>{
+        return new Promise (async (resolve) => {
+
         const ad: AdModel = new AdModel();
 
         ad.adId = +data?.ad_id;
@@ -29,7 +36,14 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
         ad.lifeSpan = data?.life_span;
         ad.userId = data?.user_id;
 
-        return ad;
+        if (options.loadPhotos){
+            ad.photos = await this.services.photo.getAllByAdId(ad.adId);
+        }    
+
+        resolve (ad);
+
+        })
+
     }
 
     public async getAllByUserId(userId: number, options: AdAdapterOptions): Promise<AdModel[]> {
@@ -37,11 +51,11 @@ class AdService extends BaseService<AdModel, AdAdapterOptions>{
     }
 
     public async add(data: IAddAd): Promise<AdModel> {
-        return this.baseAdd(data, {});
+        return this.baseAdd(data, DefaultAdAdapterOptions);
     }
 
     public async editById(adId: number, data: IEditAd): Promise<AdModel>{
-        return this.baseEditById(adId, data, {});
+        return this.baseEditById(adId, data, DefaultAdAdapterOptions);
     }
 
     public async deleteById(adId:number): Promise<true>{

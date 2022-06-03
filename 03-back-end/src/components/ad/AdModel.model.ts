@@ -1,4 +1,5 @@
 import IModel from '../../common/IModel.interface';
+import PhotoModel from '../photo/PhotoModel.model';
 
 class AdModel implements IModel{
     adId: number;
@@ -10,6 +11,7 @@ class AdModel implements IModel{
     color: string;
     country: string;
     lifeSpan: string;
+    photos?: PhotoModel[] = [];
     userId: number; //FK
     
 }

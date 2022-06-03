@@ -114,7 +114,7 @@ class UserController extends BaseController {
             return res.status(400).send(AddAdValidator.errors);
         }
 
-        this.services.user.getById(userId, {loadAd: true})
+        this.services.user.getById(userId, {loadAd: true, loadPhoto: false})
             .then(result => {
                 if (result === null){
                     return res.sendStatus(404);
@@ -159,7 +159,7 @@ class UserController extends BaseController {
                 }
 
 
-                this.services.ad.getById(adId, {})
+                this.services.ad.getById(adId, { loadPhotos: false})
                 .then(result => {
                     if (result === null){
                         return res.status(404).send('Ad not found!');
