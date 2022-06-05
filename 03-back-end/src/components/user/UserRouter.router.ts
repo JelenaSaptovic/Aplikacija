@@ -14,7 +14,8 @@ class UserRouter  implements IRouter{
 
         application.get("/api/user", userController.getAll.bind(userController));
         application.get("/api/user/:id", userController.getById.bind(userController));
-        application.post("/api/user", userController.add.bind(userController));
+        application.post("/api/user/register", userController.register.bind(userController));
+        application.get("/api/user/activate/:code", userController.activate.bind(userController));
         application.put("/api/user/:uid", userController.edit.bind(userController));
         application.post("/api/user/:uid/ad", userController.addAd.bind(userController));
         application.put("/api/user/:uid/ad/:aid", userController.editAd.bind(userController));

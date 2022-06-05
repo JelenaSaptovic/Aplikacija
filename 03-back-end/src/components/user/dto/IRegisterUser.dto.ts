@@ -1,29 +1,28 @@
 import Ajv from "ajv";
-import IServiceData from '../../../common/IServiceData.interface';
 import addFormats from "ajv-formats";
-
+import IServiceData from '../../../common/IServiceData.interface';
 
 const ajv = new Ajv();
 addFormats(ajv);
 
-
-export default interface IEditUser extends IServiceData{
-    password_hash?: string;
-    forename?: string;
-    surname?: string;
-    is_active?: number;
-    activation_code?: string;
+export interface IRegisterUserDto {
+    username: string;
+    email: string;
+    password: string;
+    forename: string;
+    surname: string;
 }
 
-interface IEditUserDto{
-    password?: string;
-    forename?: string;
-    surname?: string;
-    isActive?: boolean;
+export interface IAddUser extends IServiceData {
+    username: string;
+    email: string;
+    password_hash: string;
+    forename: string;
+    surname: string;
+    activation_code: string;
 }
 
-
-const EditUserSchema = {
+const RegisterUserValidator = ajv.compile ({
     type: "object",
     properties: {
         username: {
@@ -44,22 +43,22 @@ const EditUserSchema = {
             minLength: 2,
             maxLength: 64,
         },
-        surename: {
+        surname: {
             type: "string",
             minLength: 2,
             maxLength: 64,
         },
-        isActive: {
-            type: "boolean",
-        }
 
     },
     required: [
-        
+        "username",
+        "email",
+        "password",
+        "forename",
+        "surname",
     ],
     additionalProperties: false,
-};
+});
 
-const EditUserValidator = ajv.compile(EditUserSchema);
 
-export { EditUserValidator, IEditUserDto };
+export { RegisterUserValidator };

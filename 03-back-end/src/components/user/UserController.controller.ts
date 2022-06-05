@@ -1,12 +1,13 @@
 import { DefaultUserAdapterOptions } from './UserService.service';
 import { Request, Response } from "express";
-import { AddUserValidator, IAddUserDto } from './dto/IAddUser.dto';
 import { AddAdValidator, IAddAdDto } from '../ad/dto/IAddAd.dto';
 import IEditUser, { EditUserValidator, IEditUserDto } from './dto/IEditUser.dto';
 import { EditAdValidator, IEditAdDto } from '../ad/dto/IEditAd.dto';
 import BaseController from '../../common/BaseController';
 import * as bcrypt from "bcrypt";
-
+import { IRegisterUserDto, RegisterUserValidator } from './dto/IRegisterUser.dto';
+import * as uuid from "uuid";
+import UserModel from './UserModel.model';
 
 class UserController extends BaseController {
     
@@ -24,10 +25,6 @@ class UserController extends BaseController {
     async getById(req: Request, res: Response) {
         const id: number = +req.params?.id;
 
-        if (id === 4) {
-            throw "Neki tekst!";
-        }
-
         this.services.user.getById(id, {
             loadAd: true
         })
@@ -42,18 +39,22 @@ class UserController extends BaseController {
             });
     }
 
-    async add(req: Request, res: Response){
-        const body = req.body as IAddUserDto;
+    async register(req: Request, res: Response){
+        const body = req.body as IRegisterUserDto;
 
-        if( !AddUserValidator(body)) {
-            return res.status(400).send(AddUserValidator.errors);
+        if( !RegisterUserValidator(body)) {
+            return res.status(400).send(RegisterUserValidator.errors);
         }
 
         const passwordHash = bcrypt.hashSync(body.password, 10);
 
         this.services.user.add({
             username: body.username,
+            email: body.email,
             password_hash: passwordHash,
+            forename: body.forename,
+            surname: body.surname,
+            activation_code: uuid.v4(),
         })
             .then(result => {
                 res.send(result);
@@ -63,13 +64,48 @@ class UserController extends BaseController {
             });
     }
 
+    activate(req: Request, res: Response){
+        const code: string = req.params?.code;
+
+        this.services.user.getUserByActivationCode(code, {
+            removeActivationCode: true,
+            loadAd: false,
+        })
+        .then(result => {
+            if (result === null) {
+                throw {
+                    status: 404,
+                    message: "User not found!",
+                }
+            }
+
+            return result;
+        })
+        .then(result => {
+            const user = result as UserModel;
+
+            return this.services.user.editById(user.userId, {
+                is_active: 1,
+                activation_code: null,
+            });
+        })
+        .then(user => {
+            res.send(user);
+        })
+        .catch(error => {
+            setTimeout(() =>{
+                res.status(error?.status ?? 500).send(error?.message);
+            }, 500);    
+        });
+    }
+
     async edit(req: Request, res: Response){
         const id: number = +req.params?.uid;
 
         const data = req.body as IEditUserDto;
 
         if(!EditUserValidator(data)){
-            return res.status(400).send(AddUserValidator.errors);
+            return res.status(400).send(EditUserValidator.errors);
         }
 
         this.services.user.getById(id, { loadAd: false })
@@ -78,20 +114,30 @@ class UserController extends BaseController {
                     return res.sendStatus(404);
                 }
 
-                const passwordHash = bcrypt.hashSync(data.password, 10);
-
-                const serviceData: IEditUser = {
-                    password_hash: passwordHash
-                };
+                const serviceData: IEditUser = { };
 
                 if (data.isActive !== undefined){
                     serviceData.is_active = data.isActive ? 1 : 0;
+                }
+
+                if (data.forename !== undefined){
+                    serviceData.forename = data.forename;
+                }
+
+                if (data.surname !== undefined){
+                    serviceData.surname = data.surname;
+                }
+
+                if (data.password !== undefined){
+                    const passwordHash = bcrypt.hashSync(data.password, 10);
+                    serviceData.password_hash = passwordHash;
                 }
 
                 this.services.user.editById(
                     id, serviceData,
                     {
                         loadAd: true,
+                        removeActivationCode: true,
                     }               
                 )
                 .then(result => {
