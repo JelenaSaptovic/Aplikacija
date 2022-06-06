@@ -45,7 +45,7 @@ class UserService extends BaseService<UserModel, IUserAdapterOptions>{
     }
 
     public async add(data: IAddUser): Promise<UserModel> {
-        return this.baseAdd(data, { removeActivationCode: true, loadAd: false, });
+        return this.baseAdd(data, { removeActivationCode: false, loadAd: false, });
     }
 
     public async editById(userId: number, data: IEditUser, options: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel>{
