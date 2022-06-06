@@ -36,18 +36,18 @@ CREATE TABLE IF NOT EXISTS `ad` (
   PRIMARY KEY (`ad_id`),
   KEY `fk_ad_user_id` (`user_id`),
   CONSTRAINT `fk_ad_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table piivt_app.ad: ~8 rows (approximately)
 INSERT INTO `ad` (`ad_id`, `title`, `description`, `expires_at`, `price`, `flower_kind`, `color`, `country`, `life_span`, `user_id`) VALUES
 	(1, 'Prodajem sobni kaktus', 'Kaktusi su sukulentne biljke, to znači da imaju mesnate delove koji imaju funkciju čuvanja vode. Ne zahtevaju mnogo nege i veoma su laki za održavanje. ', '2022-06-01 20:50:17', 500.00, 'kaktus', 'zelena', 'Amerika', 'U zavisnosti od vrste mogu da žive od 10 do 200 godina.', 1),
 	(2, 'Srećni bambus', '', '2022-06-01 20:54:27', 430.00, 'babmus', 'zelena', 'Kina', 'Prosečan bambus može da živi do 15 godina.', 2),
 	(4, 'Prodajem fikus', 'Težina: 5.5kg', '2022-06-01 20:56:19', 8000.00, 'fikus', 'zelena', '/', 'Ako se pravilno održava, fikus može da živi i do 20 godina.', 4),
-	(5, 'Sobna biljka - kafa', 'Kafa voli dosta indirektnog svetla, možete je postaviti na istočnu stranu gde će imati malo direktnog jutarnjeg sunca. Tokom leta može biti u dvorištu ili na terasi, u hladovini, a tokom zime bi najbolje bilo da bude na temperaturi od 16 do 18°C. Voli visoku vlažnost vazduha, a zalivanje umereno.', '2022-06-01 20:58:04', 550.00, 'kafa', 'svetlo zelena', 'Etiopija', 'Iako mogu da dožive i 100 godina, najproduktivnije su u dobi izmedju 7 i 20 godina.', 5),
 	(6, 'Mozaik biljka / Fitonija', 'Potrebno je redovno umereno zalivanje destilovanom vodom, kišnicom ili odstajalom vodom koja treba da bude meka i sobne temperature. Zemlja između dva zalivanje ne treba da se potpuno osuši, već samo gornji sloj. Leti se zaliva dva do tri puta nedeljno, a zimi jednom. ', '2022-06-01 20:58:16', 300.00, 'fitonija', 'zelena/crvena', '/', '/', 5),
 	(7, 'Livistona palma', ' ', '2022-06-01 21:00:49', 1000.00, 'palma', 'zelena', 'Zemlje tropske i subtropske klime.', 'Između 7 i 8 decenija.', 6),
 	(8, 'Vestacko drvece', ' ', '2022-06-01 20:11:33', 3500.00, 'vestacko drvece', 'zelena', '', '', 1),
-	(10, 'Primer 1', 'Primer 1', '2022-06-01 23:01:13', 580.00, 'skkasnkfank', 'primeeer', 'fnklnflkan', 'asmfklmaslkdmas', 7);
+	(10, 'Primer 1', 'Primer 1', '2022-06-01 23:01:13', 580.00, 'skkasnkfank', 'primeeer', 'fnklnflkan', 'asmfklmaslkdmas', 7),
+	(11, 'Neki naslov', 'Nema opis', '2022-06-06 10:48:18', 430.00, 'neka biljka', 'zelena', 'Neka zemlja', 'Neki zivotni vek.', 2);
 
 -- Dumping structure for table piivt_app.photo
 DROP TABLE IF EXISTS `photo`;
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `photo` (
   UNIQUE KEY `uq_photo_file_path` (`file_path`) USING HASH,
   KEY `fk_photo_ad_id` (`ad_id`),
   CONSTRAINT `fk_photo_ad_id` FOREIGN KEY (`ad_id`) REFERENCES `ad` (`ad_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table piivt_app.photo: ~0 rows (approximately)
 
@@ -88,7 +88,7 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password_hash`, `forename`,
 	(4, 'choda', 'damljan@mail.com', 'ringring789', 'Damljan', 'Bojović', 1, '222-888'),
 	(5, 'Milos456', 'milos.markovic11@gmail.com', '$2b$10$z1.lx3j651vA/z50U6zhbO2rZrUInJ1NEKHUk5J7nLijrUUy9Kyvy', 'Miloš', 'Marković', 0, '456-896'),
 	(6, 'sofija_', 'sdjordjevic@mail.com', 'Qwerty', 'Sofija', 'Đorđević', 1, '012-856'),
-	(7, 'zemin', 'dvdtmtjvc@mail.com', '$2b$10$eUT8g6Q57KuSYHe.sjiR7ufMWct.yMplpSj9xN/iPrGw4vogpFzu.', 'David', 'Timotijević', 0, '541-349'),
+	(7, 'zemin', 'dvdtmtjvc@mail.com', '$2b$10$eUT8g6Q57KuSYHe.sjiR7ufMWct.yMplpSj9xN/iPrGw4vogpFzu.', 'Marko', 'Timotijević', 0, '541-349'),
 	(10, 'Igor111', 'uskokovic.igor@gmail.com', '$2b$10$UH.c2Wtl3.aDSaNB6U7F/OqOyBF25j47ZlgXqInsGXWEcn84topt6', 'Igor', 'Uskoković', 0, '741-963'),
 	(12, 'flower_lover', 'milica.m@mail.com', '$2b$10$39i8yp1VHhllIZ7SayYPteiBklx2hc2BZatIH1Ld4Tj5WlJJODfKy', 'Milica', 'Milosavljević', 1, NULL);
 
