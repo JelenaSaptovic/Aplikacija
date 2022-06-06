@@ -1,0 +1,642 @@
+{
+	"info": {
+		"_postman_id": "ae10c22f-d0ff-4b89-a0a7-8d11d53e5c50",
+		"name": "Aplikacija",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21060126"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"forename\": \"Darko\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all users",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "get a single user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get a single user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user/1",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "edit single user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"forename\": \"Marko\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/7",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"7"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "edit single user",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"forename\": \"Marko\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/7",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"7"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "register new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"jelena.s\",\r\n    \"email\": \"saptovicjelena@gmail.com\",\r\n    \"passwordHash\": \"Novalozinka777\",\r\n    \"forename\": \"Jelena\",\r\n    \"surname\": \"Šaptović\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/register",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "register new user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"jelena.s\",\r\n    \"email\": \"saptovicjelena@gmail.com\",\r\n    \"passwordHash\": \"Novalozinka777\",\r\n    \"forename\": \"Jelena\",\r\n    \"surname\": \"Šaptović\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/register",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Ad",
+			"item": [
+				{
+					"name": "get all ads",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/ad",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"ad"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all ads",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/ad",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"ad"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "get ad by user id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"5",
+								"ad",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get ad by user id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user/5/ad/5",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"5",
+										"ad",
+										"5"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "edit single ad",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"neki novi opis\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"5",
+								"ad",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "edit single ad",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"neki novi opis\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/5/ad/5",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"5",
+										"ad",
+										"5"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "delete ad",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"5",
+								"ad",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete ad",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user/5/ad/5",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"5",
+										"ad",
+										"5"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "add single ad",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Neki naslov\",\r\n    \"description\": \"Nema opis\",\r\n    \"price\": 430.00,\r\n    \"flowerKind\": \"neka biljka\",\r\n    \"color\": \"zelena\",\r\n    \"country\": \"Neka zemlja\",\r\n    \"lifeSpan\": \"Neki zivotni vek.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/2/ad",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"2",
+								"ad"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add single ad",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Neki naslov\",\r\n    \"description\": \"Nema opis\",\r\n    \"price\": 430.00,\r\n    \"flowerKind\": \"neka biljka\",\r\n    \"color\": \"zelena\",\r\n    \"country\": \"Neka zemlja\",\r\n    \"lifeSpan\": \"Neki zivotni vek.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/2/ad",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"2",
+										"ad"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Photo",
+			"item": [
+				{
+					"name": "upload ad photo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "slika1",
+									"type": "file",
+									"src": "/C:/Users/Korisnik/Desktop/slika2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/user/1/ad/1/photo",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1",
+								"ad",
+								"1",
+								"photo"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "upload ad photo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "slika1",
+											"type": "file",
+											"src": "/C:/Users/Korisnik/Desktop/slika2.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{API_URL}}/api/user/1/ad/1/photo",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"ad",
+										"1",
+										"photo"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "delete photo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/1/ad/1/photo/5",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"1",
+								"ad",
+								"1",
+								"photo",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete photo",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{API_URL}}/api/user/1/ad/1/photo/5",
+									"host": [
+										"{{API_URL}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"ad",
+										"1",
+										"photo",
+										"5"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "API_URL",
+			"value": "http://localhost:10000",
+			"type": "string"
+		}
+	]
+}
