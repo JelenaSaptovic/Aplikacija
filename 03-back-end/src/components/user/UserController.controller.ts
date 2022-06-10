@@ -106,7 +106,7 @@ class UserController extends BaseController {
                                     You must activate your account by clicking on the following link: 
                                 </p>
                                 <p style="text-align: center; padding: 10px;">
-                                    <a hraf="http://localhost:10000/api/user/activate/${ user.activationCode }">Activate</a>
+                                    <a href="http://localhost:10000/api/user/activate/${ user.activationCode }">Activate</a>
                                 </p>
                             </body>
                         </html>`                       
@@ -156,12 +156,72 @@ class UserController extends BaseController {
             });
         })
         .then(user => {
+            return this.sendActivationEmail(user);
+        })
+        .then(user => {
             res.send(user);
         })
         .catch(error => {
             setTimeout(() =>{
                 res.status(error?.status ?? 500).send(error?.message);
             }, 500);    
+        });
+    }
+
+    private async sendActivationEmail(user: UserModel): Promise<UserModel> {
+        return new Promise ((resolve, reject) => {
+            const transport = nodemailer.createTransport(
+                {
+                    host: DevConfig.mail.host,
+                    port: DevConfig.mail.port,
+                    secure: false,
+                    tls: {
+                        ciphers: "SSLv3",
+                    },
+                    debug: DevConfig.mail.debug,
+                    auth: {
+                        user: DevConfig.mail.email,
+                        pass: DevConfig.mail.password
+                    },
+                },
+                {
+                    from: DevConfig.mail.email,
+                },
+            );
+
+            const mailOptions: Mailer.Options = {
+                to: user.email,
+                subject: "Account activation",
+                html: `<!doctype html>
+                       <html>
+                            <head><meta charset="utf-8"></head>
+                            <body>
+                                <p>
+                                    Dear ${ user.forename } ${ user.surname }, <br>
+                                    Your account was successfully activated.
+                                </p>
+                                <p>
+                                    You can now log into your account using login form. 
+                                </p>
+                            </body>
+                        </html>`                       
+            };
+
+            transport.sendMail(mailOptions)
+            .then(() => {
+                transport.close();
+
+                user.activationCode = null;
+
+                resolve(user);
+            })
+            .catch(error => {
+                transport.close();
+
+                reject({
+                    message: error?.message,
+                });
+            })
         });
     }
 
