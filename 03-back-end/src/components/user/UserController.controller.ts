@@ -51,21 +51,29 @@ class UserController extends BaseController {
 
         const passwordHash = bcrypt.hashSync(body.password, 10);
 
-        this.services.user.add({
-            username: body.username,
-            email: body.email,
-            password_hash: passwordHash,
-            forename: body.forename,
-            surname: body.surname,
-            activation_code: uuid.v4(),
+        this.services.user.startTransaction()
+        .then(() => {
+            return this.services.user.add({
+                username: body.username,
+                email: body.email,
+                password_hash: passwordHash,
+                forename: body.forename,
+                surname: body.surname,
+                activation_code: uuid.v4(),
+            });
         })
             .then(user => {
                 return this.sendRegistrationEmail(user);
             })
+            .then(async user => {
+                await this.services.user.comitChanges();
+                return user;
+            })
             .then(user => {
                 res.send(user);
             })
-            .catch(error => {
+            .catch(async error => {
+                await this.services.user.rollbackChanges();
                 res.status(500).send(error?.message);
             });
     }
@@ -83,7 +91,7 @@ class UserController extends BaseController {
                     debug: DevConfig.mail.debug,
                     auth: {
                         user: DevConfig.mail.email,
-                        pass: DevConfig.mail.password
+                        pass: DevConfig.mail.password,
                     },
                 },
                 {
