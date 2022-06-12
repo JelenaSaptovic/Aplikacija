@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
 import ITokenData from './dto/ITokenData';
 import { DevConfig } from '../../configs';
+import AuthMiddleware from '../../middlewares/AuthMiddleware';
 
 
 export default class AuthController extends BaseController{
@@ -66,33 +67,8 @@ export default class AuthController extends BaseController{
     userRefresh(req: Request, res: Response){
         const refreshTokenHeader: string = req.headers?.authorization ?? "";
 
-        if(refreshTokenHeader === ""){
-            return res.status(400).send("No token specified!");
-        }
-
-        const [ tokenType, token ] = refreshTokenHeader.trim().split(" ");
-
-        if ( tokenType !== "Bearer" ){
-            return res.status(401).send("Invalid token type!");
-        }
-
-        if(typeof token !== "string" || token.length === 0 ){
-            return res.status(401).send("Token not specified");
-        }
-
         try {
-            const refreshTokenVerification = jwt.verify(token, DevConfig.auth.user.tokens.refresh.keys.public);
-
-            if(!refreshTokenVerification){
-                return res.status(401).send("Invalid token specified");
-            }
-
-            const originalTokenData = refreshTokenVerification as ITokenData;
-
-            const tokenData: ITokenData = {
-                userId: originalTokenData.userId,
-                identity: originalTokenData.identity,
-            }
+            const tokenData = AuthMiddleware.validateTokenAs(refreshTokenHeader, "refresh");
 
             const authToken = jwt.sign(tokenData, DevConfig.auth.user.tokens.auth.keys.private, {
                 algorithm: DevConfig.auth.user.algorithm,
@@ -104,13 +80,8 @@ export default class AuthController extends BaseController{
                 authToken: authToken
             });
         } catch (error) {
-            const message: string = (error?.message ?? "");
+            res.status(error?.status ?? 500).send(error?.message);
 
-            if (message.includes("jwt expired")) {
-                return res.status(401).send("Ths token has expired.");
-            }
-
-            res.status(500).send(error?.message);
         }    
     }
 }
