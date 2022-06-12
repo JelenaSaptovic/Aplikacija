@@ -1,7 +1,9 @@
 import IConfig from "./common/IConfig.interface";
 import AdRouter from "./components/ad/AdRouter.router";
+import AuthRouter from "./components/auth/AuthRouter.router";
 import UserRouter from './components/user/UserRouter.router';
 import { MailConfigurationParameters } from "./config.mail";
+import { readFileSync } from "fs";
 
 const DevConfig: IConfig = {
     server: {
@@ -34,6 +36,7 @@ const DevConfig: IConfig = {
     routers: [
         new UserRouter(),
         new AdRouter(),
+        new AuthRouter(),
     ],
     fileUploads: {
         maxFiles: 5,
@@ -69,7 +72,29 @@ const DevConfig: IConfig = {
         email: "",
         password: "",
         debug: true,
-    }
+    },
+    auth: {
+        user:{
+            algorithm: "RS256",
+            issuer: "PIiVT",
+            tokens: {
+                auth: {
+                    duration: 60 * 60 * 24,
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },
+                },
+                refresh: {
+                    duration: 60 * 60 * 24 * 60,
+                    keys: {
+                        public: readFileSync("./.keystore/app.public", "ascii"),
+                        private: readFileSync("./.keystore/app.private", "ascii"),
+                    },          
+                }
+            },    
+        },
+    },
 };
 
 DevConfig.mail = MailConfigurationParameters;

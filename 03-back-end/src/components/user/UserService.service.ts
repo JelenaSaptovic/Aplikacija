@@ -3,7 +3,6 @@ import IAdapterOptions from '../../common/IAdapterOptions.interface';
 import BaseService from '../../common/BaseService';
 import IEditUser from './dto/IEditUser.dto';
 import { IAddUser } from "./dto/IRegisterUser.dto";
-import { resolve } from 'path';
 
 interface IUserAdapterOptions extends IAdapterOptions{
     loadAd: boolean;
@@ -67,7 +66,25 @@ class UserService extends BaseService<UserModel, IUserAdapterOptions>{
                     reject(error?.message);
                 });
                 
-        })
+        });
+    }
+
+    public async getByEmail(email: string, options: IUserAdapterOptions = DefaultUserAdapterOptions): Promise<UserModel|null>{
+        return new Promise((resolve, reject) => {
+            this.getAllByFieldNameAnValue("email", email, options)
+                .then(result => {
+                    if (result.length === 0) {
+                        return resolve(null);
+                    }
+
+                resolve(result[0]);
+
+                })
+                .catch(error => {
+                    reject(error?.message);
+                });
+                
+        });
     }
 }
 
