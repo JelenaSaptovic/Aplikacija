@@ -12,6 +12,8 @@ import * as nodemailer from "nodemailer";
 import * as Mailer from "nodemailer/lib/mailer";
 import { DevConfig } from '../../configs';
 
+
+
 class UserController extends BaseController {
     
     async getAll(req: Request, res: Response) {
@@ -27,6 +29,10 @@ class UserController extends BaseController {
 
     async getById(req: Request, res: Response) {
         const id: number = +req.params?.id;
+
+        if (req.authorisation?.userId !== id){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
 
         this.services.user.getById(id, {
             loadAd: true
