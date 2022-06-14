@@ -1,4 +1,3 @@
-import { Request } from 'express';
 import ITokenData from '../../src/components/auth/dto/ITokenData';
 
 declare global {
