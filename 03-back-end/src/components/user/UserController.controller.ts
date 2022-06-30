@@ -30,6 +30,7 @@ class UserController extends BaseController {
     async getById(req: Request, res: Response) {
         const id: number = +req.params?.id;
 
+        //samo korisnik sa datim id može da vidi informacije o sebi
         if (req.authorisation?.userId !== id){
             return res.status(403).send("You are not authorised to access this resource.!");
         }
@@ -249,6 +250,11 @@ class UserController extends BaseController {
             return res.status(400).send(EditUserValidator.errors);
         }
 
+        //samo korisnik sa datim id može da menja informacije o sebi
+        if (req.authorisation?.userId !== id){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
+
         this.services.user.getById(id, { loadAd: false })
             .then(result => {
                 if (result === null){
@@ -300,6 +306,11 @@ class UserController extends BaseController {
         if (!AddAdValidator(data)) {
             return res.status(400).send(AddAdValidator.errors);
         }
+        
+        //samo korisnik sa datim id može da dodaje oglas u svoje ime
+        if (req.authorisation?.userId !== userId){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
 
         this.services.user.getById(userId, {loadAd: true, loadPhoto: false})
             .then(result => {
@@ -339,6 +350,11 @@ class UserController extends BaseController {
             return res.status(400).send(EditAdValidator.errors);
         }
 
+        //samo korisnik sa datim id može da menja informacije o oglasu koji mu pripada
+        if (req.authorisation?.userId !== userId){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
+
         this.services.user.getById(userId, { loadAd: false})
             .then(result => {
                 if (result === null){
@@ -372,6 +388,11 @@ class UserController extends BaseController {
     async deleteAd (req: Request, res: Response){
         const userId: number = +req.params?.uid;
         const adId: number = +req.params?.aid;
+
+        //samo korisnik sa datim id može da obrise oglas koji je sam napravio
+        if (req.authorisation?.userId !== userId){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
 
         this.services.user.getById(userId, { loadAd: false })
             .then(result => {

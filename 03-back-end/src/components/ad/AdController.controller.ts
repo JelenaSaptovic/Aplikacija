@@ -63,6 +63,11 @@ export default class AdController extends BaseController {
         const userId: number = +req.params?.uid;
         const adId: number = +req.params?.aid;
 
+        //samo korisnik sa datim id može da dodaje slike u oglas koji je napravio
+        if (req.authorisation?.userId !== userId){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
+
         this.services.user.getById(userId, { loadAd: false })
             .then(result => {
                 if (result === null){
@@ -222,6 +227,11 @@ export default class AdController extends BaseController {
         const userId: number = +(req.params?.uid);
         const adId: number = +(req.params?.aid);
         const photoId: number = +(req.params?.pid);
+
+        //samo korisnik sa datim id može da dodaje obrise slike iz oglasa koji je napravio
+        if (req.authorisation?.userId !== userId){
+            return res.status(403).send("You are not authorised to access this resource.!");
+        }
 
         this.services.user.getById(userId, DefaultUserAdapterOptions)
             .then(result => {
