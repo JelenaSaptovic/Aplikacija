@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import IUser from '../../../models/IUser.model';
-import IAd from '../../../models/IAd.model';
-import AdPreview from '../Ad/AdPreview';
 import { useParams } from 'react-router-dom';
+import { api } from '../../../api/api';
 
 export interface IAdPageUrlParams extends Record<string, string | undefined>{
     id: string
@@ -19,10 +18,14 @@ export default function UserPage() {
     useEffect(() => {
         setLoading(true);
 
-        fetch("http://localhost:10000/api/user/" + params.id)
-        .then(res => res.json())
-        .then(data => {
-            setUser(data);
+        api("get", "/api/user/" + params.id, "user")
+        .then(res => {
+            if(res.status === 'error'){  
+                throw {
+                    message: 'Could not get user data!'
+                }
+            }
+            setUser(res.data);
         })
         .catch(error => {
             setErrorMesage(error?.message ?? 'Unknown error while loading this user!');

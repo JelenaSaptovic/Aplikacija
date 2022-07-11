@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import IUser from '../../../models/IUser.model';
+import { api } from '../../../api/api';
 
 export default function UserList() {
 
@@ -8,10 +9,15 @@ export default function UserList() {
     const [ errorMessage, setErrorMessage ] = useState<string>("");
 
     useEffect(() => {
-        fetch("http://localhost:10000/api/user")
-        .then(res => res.json())
-        .then(data => {
-            setUsers(data);
+        api("get", "/api/user", "user")
+        .then(apiResponse => {
+            if (apiResponse.status === 'ok'){
+                return setUsers(apiResponse.data);
+            }
+
+            throw {
+                message: 'Unknown error while loading useres...',
+            }
         })
         .catch(error => {
             setErrorMessage(error?.message ?? 'Unknown error while loading useres...');
