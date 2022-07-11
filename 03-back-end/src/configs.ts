@@ -91,9 +91,10 @@ const DevConfig: IConfig = {
                         public: readFileSync("./.keystore/app.public", "ascii"),
                         private: readFileSync("./.keystore/app.private", "ascii"),
                     },          
-                }
+                },
             },    
         },
+        allowAllRoutes: true,
     },
 };
 

@@ -91,6 +91,7 @@ interface IConfig {
     mail: IMailConfiguartion,
     auth: {
         user: IAuthTokenOptions,
+        allowAllRoutes: boolean,
     },
 }
 

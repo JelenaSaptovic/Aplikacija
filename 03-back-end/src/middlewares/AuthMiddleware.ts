@@ -13,6 +13,10 @@ export default class AuthMiddleware {
     }
 
     private static verifyAuthToken(req: Request, res: Response, next: NextFunction, allowed: ("user")[]){
+        if (DevConfig.auth.allowAllRoutes) {
+            return next();
+        }
+        
         const tokenHeader: string = req.headers?.authorization ?? "";
     
         try {

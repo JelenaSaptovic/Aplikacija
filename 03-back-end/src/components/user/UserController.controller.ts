@@ -31,9 +31,9 @@ class UserController extends BaseController {
         const id: number = +req.params?.id;
 
         //samo korisnik sa datim id može da vidi informacije o sebi
-        if (req.authorisation?.userId !== id){
-            return res.status(403).send("You are not authorised to access this resource.!");
-        }
+        //if (req.authorisation?.userId !== id){
+         //   return res.status(403).send("You are not authorised to access this resource.!");
+        //}
 
         this.services.user.getById(id, {
             loadAd: true
