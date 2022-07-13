@@ -14,8 +14,11 @@ export default function Menu() {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
                         <Link className="nav-item nav-link" to="/contact">Contact</Link>
-                        <Link className="nav-item nav-link" to="/users">Users</Link>
+                        <Link className="nav-item nav-link" to="/ads">Ads</Link>
                         <Link className="nav-item nav-link" to="/auth/user/login">Login</Link>
+                    
+                        <Link className="nav-item nav-link" to="/dashboard">User dashboard</Link>
+
                     </div>
                 </div>
             </nav>

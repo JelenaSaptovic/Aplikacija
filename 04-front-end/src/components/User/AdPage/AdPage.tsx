@@ -1,34 +1,33 @@
 import { useState, useEffect } from 'react';
-import IUser from '../../../models/IUser.model';
 import { useParams } from 'react-router-dom';
 import { api } from '../../../api/api';
+import IAd from '../../../models/IAd.model';
 
 export interface IAdPageUrlParams extends Record<string, string | undefined>{
     id: string
 }
 
-export default function UserPage() {
-    const [ user, setUser ] = useState<IUser|null>(null);
-   // const [ ads, setAds ] = useState<IAd[]>([]);
+export default function AdPage() {
+    const [ ad, setAd ] = useState<IAd|null>(null);
     const [ errorMesage, setErrorMesage ] = useState<string>("");
     const [ loading, setLoading ] = useState<boolean>(false);
     
-    const params = useParams<IAdPageUrlParams>();
+   const param = useParams<IAdPageUrlParams>();
 
     useEffect(() => {
         setLoading(true);
 
-        api("get", "/api/user/" + params.id, "user")
+        api("get", "/api/ad/" + param.id, "user")
         .then(res => {
             if(res.status === 'error'){  
                 throw {
-                    message: 'Could not get user data!'
+                    message: 'Could not get ad data!'
                 }
             }
-            setUser(res.data);
+            setAd(res.data);
         })
         .catch(error => {
-            setErrorMesage(error?.message ?? 'Unknown error while loading this user!');
+            setErrorMesage(error?.message ?? 'Unknown error while loading this ad!');
         })
         .finally(() => {
             setLoading(false);
@@ -40,12 +39,14 @@ export default function UserPage() {
             { loading && <p>Loading//</p> }
             { errorMesage && <p>Error: { errorMesage }</p> }
 
-            { user && (
+            { ad && (
                 <div>
-                    <h1>{ user?.email }</h1>
-                    <h1>{ user?.surname }</h1>
-                    <h1>{ user?.forename }</h1>
-                    <h1>{ user?.username }</h1>
+                    <h1>{ ad?.title }</h1>
+                    <h1>{ ad?.description }</h1>
+                    <h1>{ ad?.expiresAt }</h1>
+                    <h1>{ ad?.flowerKind }</h1>
+                    <h1>{ ad?.color }</h1>
+                    <h1>{ ad?.country}</h1>
                 </div>    
             ) }
         </div>

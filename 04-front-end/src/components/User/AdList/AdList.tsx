@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import IUser from '../../../models/IUser.model';
+import IAd from '../../../models/IAd.model';
 import { api } from '../../../api/api';
 
-export default function UserList() {
+export default function AdList() {
 
-    const [ users, setUsers ] = useState<IUser[]>([]);
+    const [ ads, setAds ] = useState<IAd[]>([]);
     const [ errorMessage, setErrorMessage ] = useState<string>("");
 
     useEffect(() => {
-        api("get", "/api/user", "user")
+        api("get", "/api/ad", "user")
         .then(apiResponse => {
             if (apiResponse.status === 'ok'){
-                return setUsers(apiResponse.data);
+                return setAds(apiResponse.data);
             }
 
             throw {
-                message: 'Unknown error while loading useres...',
+                message: 'Unknown error while loading ads...',
             }
         })
         .catch(error => {
-            setErrorMessage(error?.message ?? 'Unknown error while loading useres...');
+            setErrorMessage(error?.message ?? 'Unknown error while loading ads...');
         });
     }, [ ]);
 
@@ -29,9 +29,9 @@ export default function UserList() {
             { errorMessage && <p>Error: { errorMessage }</p> }
             { !errorMessage && 
                 <ul>
-                    { users.map(user =>
-                        <li key={ "user-" + user.userId }>
-                            <Link to={ "/user/" + user.userId }>{ user.username }</Link>   
+                    { ads.map(ad =>
+                        <li key={ "ad-" + ad.adId }>
+                            <Link to={ "/ad/" + ad.adId }>{ ad.title }</Link>   
                         </li>
                     ) }    
                 </ul>
