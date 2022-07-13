@@ -9,6 +9,7 @@ class AdRouter  implements IRouter{
         const adController: AdController = new AdController(resources.services);
 
         application.get("/api/ad", adController.getAll.bind(adController));
+        application.get("/api/ad/:id", adController.getSingleAd.bind(adController));
     }
 }
 

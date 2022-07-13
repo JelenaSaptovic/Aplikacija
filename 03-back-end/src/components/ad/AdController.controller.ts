@@ -27,6 +27,23 @@ export default class AdController extends BaseController {
             
     }
 
+    async getSingleAd(req: Request, res: Response) {
+        const adId: number = +req.params?.id;
+
+        this.services.ad.getById(adId, {
+            loadAd: true
+        })
+            .then(result => {
+                if (result === null){
+                    return res.sendStatus(404);
+                }
+                res.send(result);
+            })
+            .catch(error => {
+                res.status(500).send(error?.message);
+            });
+    }
+
     async getAdById(req: Request, res: Response){
         const userId: number = +req.params?.uid;
         const adId: number = +req.params?.aid;
