@@ -44,7 +44,7 @@ const EditUserSchema = {
             minLength: 2,
             maxLength: 64,
         },
-        surename: {
+        surname: {
             type: "string",
             minLength: 2,
             maxLength: 64,
