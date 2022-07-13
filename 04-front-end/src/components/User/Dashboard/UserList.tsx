@@ -28,7 +28,11 @@ export default function UserList() {
     
     function UserRow(props: IUserRowProps) {
         const [ editPasswordVisible, setEditPasswordVisible ] = useState<boolean>(false);
+        const [ editNamePartsVisible, setEditNamePartsVisible ] = useState<boolean>(false);
+
         const [ newPassword, setNewPassword ] = useState<string>("");
+        const [ newForename, setNewForename ] = useState<string>(props.user.forename);
+        const [ newSurname, setNewSurname ] = useState<string>(props.user.surname);
         
         const activeSide   = props.user.isActive  ? " btn-primary" : " btn-light";
         const inactiveSide = !props.user.isActive ? " btn-primary" : " btn-light";
@@ -63,13 +67,59 @@ export default function UserList() {
             setNewPassword(e.target.value);
         }
         
+        function doEditNameParts() {
+            api("put", "/api/user/" + props.user.userId, "user", {
+                forename: newForename,
+                surname: newSurname,
+            })
+            .then(res => {
+                if (res.status === 'error') {
+                    return setErrorMessage(res.data + "");
+                }
+
+                loadUsers();
+            });
+        }
+
         return(
             <tr>
                 <td>{ props.user.userId }</td>
                 <td>{ props.user.username}</td>
-                <td>{ props.user.forename }</td>
-                <td>{ props.user.surname }</td>
                 <td>{ props.user.email}</td>
+                <td>
+                    { !editNamePartsVisible &&
+                        <div>
+                            <span>{ props.user.forename + " " + props.user.surname }</span> &nbsp;&nbsp;
+                            <button className="btn btn-primary btn-sm" onClick={ () => setEditNamePartsVisible(true) }>
+                               Edit
+                            </button>
+                        </div>
+                    }
+                    { editNamePartsVisible && 
+                        <div>
+                            <div className="form-group mb-3">
+                                <input type="text" className="form-control form-control-sm" value={ newForename } onChange={ e => setNewForename(e.target.value) } />
+                            </div>
+
+                            <div className="form-group mb-3">
+                                <input type="text" className="form-control form-control-sm" value={ newSurname } onChange={ e => setNewSurname(e.target.value) } />
+                            </div>
+
+                            { (newForename !== props.user.forename || newSurname !== props.user.surname) &&
+                            ( <button className="btn btn-sm btn-primary" onClick={ () => doEditNameParts() }>
+                                Edit
+                            </button> ) }
+
+                            <button className="btn btn-sm btn-danger" onClick={ () => {
+                                setNewForename(props.user.forename);
+                                setNewSurname(props.user.surname);
+                                setEditNamePartsVisible(false);
+                            } }>
+                                Cancel
+                            </button>
+                        </div> 
+                    }
+                </td>
                 <td>
                     <div className="btn-group" onClick={() => { doToggleUserActiveState() }}>
                         <div className={"btn btn-sm" + activeSide}>
@@ -103,9 +153,8 @@ export default function UserList() {
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
-                        <th>Forename</th>
-                        <th>Surname</th>
                         <th>Email</th>
+                        <th>Forename and surname</th>
                         <th>Status</th>
                         <th>Opions</th>
                     </tr>
