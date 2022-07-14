@@ -10,6 +10,7 @@ import Dashboard from '../User/Dashboard/Dashboard';
 import AdPage from '../User/AdPage/AdPage';
 import AdList from '../User/AdList/AdList';
 import UserAdList from '../User/Dashboard/UserAdList';
+import AddAd from '../User/Dashboard/AddAd';
 
 function Application() {
   return (
@@ -27,6 +28,8 @@ function Application() {
           <Route path='/dashboard' element={ <Dashboard /> } />
           <Route path='/dashboard/ad/list' element={ <UserAdList /> } />
           <Route path='/dashboard/user/list' element={ <UserList /> } />
+          <Route path='/dashboard/ad/add' element={ <AddAd /> } />
+          <Route path="/dashboard/ad/list" element={ <p>Nije rutirano...</p> } />
 
 
         </Routes>

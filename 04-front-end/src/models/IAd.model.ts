@@ -1,3 +1,5 @@
+import IPhoto from "./IPhoto.model";
+
 export default interface IAd {
     adId: number;
     title: string;
@@ -8,6 +10,6 @@ export default interface IAd {
     color: string;
     country: string;
     lifeSpan: string;
-    photos?: any[];
+    photos: IPhoto[];
     userId: number; //FK
 }
