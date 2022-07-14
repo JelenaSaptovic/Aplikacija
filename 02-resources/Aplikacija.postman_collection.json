@@ -15,11 +15,21 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"forename\": \"Darko\"\r\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,17 +74,27 @@
 				{
 					"name": "get a single user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/user/1",
+							"raw": "{{API_URL}}/api/user/2",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -106,11 +126,21 @@
 				{
 					"name": "edit single user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"forename\": \"Marko\"\r\n}",
+							"raw": "{\r\n    \"forename\": \"Jelena\",\r\n    \"surname\": \"Jelena\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -118,14 +148,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/user/7",
+							"raw": "{{API_URL}}/api/user/22",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"7"
+								"22"
 							]
 						}
 					},
@@ -170,7 +200,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"jelena.s\",\r\n    \"email\": \"saptovicjelena@gmail.com\",\r\n    \"passwordHash\": \"Novalozinka777\",\r\n    \"forename\": \"Jelena\",\r\n    \"surname\": \"Šaptović\"\r\n}",
+							"raw": "{\r\n    \"username\": \"jelena123\",\r\n    \"email\": \"saptovicjelena@gmail.com\",\r\n    \"password\": \"Popokatepetl159\",\r\n    \"forename\": \"Jelena\",\r\n    \"surname\": \"Saptovic\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,6 +252,26 @@
 							"body": null
 						}
 					]
+				},
+				{
+					"name": "activate new user account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/user/activate/4e0776f8-be9a-46ed-a7ee-39c11070e2ac",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"activate",
+								"4e0776f8-be9a-46ed-a7ee-39c11070e2ac"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -231,6 +281,16 @@
 				{
 					"name": "get all ads",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -274,16 +334,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"raw": "{{API_URL}}/api/user/22/ad/12",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"5",
+								"22",
 								"ad",
-								"5"
+								"12"
 							]
 						}
 					},
@@ -317,11 +377,21 @@
 				{
 					"name": "edit single ad",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"neki novi opis\"\r\n}",
+							"raw": "{\r\n    \"description\": \"neki novi opis - probaaa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -329,16 +399,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"raw": "{{API_URL}}/api/user/22/ad/12",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"5",
+								"22",
 								"ad",
-								"5"
+								"12"
 							]
 						}
 					},
@@ -381,19 +451,29 @@
 				{
 					"name": "delete ad",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{API_URL}}/api/user/5/ad/5",
+							"raw": "{{API_URL}}/api/user/22/ad/12",
 							"host": [
 								"{{API_URL}}"
 							],
 							"path": [
 								"api",
 								"user",
-								"5",
+								"22",
 								"ad",
-								"5"
+								"12"
 							]
 						}
 					},
@@ -427,11 +507,21 @@
 				{
 					"name": "add single ad",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Neki naslov\",\r\n    \"description\": \"Nema opis\",\r\n    \"price\": 430.00,\r\n    \"flowerKind\": \"neka biljka\",\r\n    \"color\": \"zelena\",\r\n    \"country\": \"Neka zemlja\",\r\n    \"lifeSpan\": \"Neki zivotni vek.\"\r\n}",
+							"raw": "{\r\n    \"title\": \"Drvo života\",\r\n    \"description\": \"U pitanju je saksijsko cveće savršeno za Vašu terasu. Pojedine vrste odlično kako vrele tako i hladne dane.\",\r\n    \"price\": 1500.00,\r\n    \"flowerKind\": \"drvo života\",\r\n    \"color\": \"zelena\",\r\n    \"country\": \"Nepoznata\",\r\n    \"lifeSpan\": \"U savrsenim uslovima moze da traje godinama..\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -485,6 +575,25 @@
 							"body": null
 						}
 					]
+				},
+				{
+					"name": "Get single ad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/ad/1",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"ad",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -494,20 +603,30 @@
 				{
 					"name": "upload ad photo",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIyLCJpZGVudGl0eSI6IkplbGVuYSBTYXB0b3ZpYyIsImlhdCI6MTY1NjYwNTUxMCwiZXhwIjoxNjU2NjkxOTEwLCJpc3MiOiJQSWlWVCJ9.MzjJkI3n9n0WrPVYS1cM4ZywOYnCL5sR-RQNs8D6-3-6Uic6EyUvv2OVHG55WQMdcUnYOIUFBQyB2YG3U3dhibsBqr1T26Th4LicdVxQnNwXGKtMdpaXdxZlUQDitbibzjW5DNsEioE4WpiBqxEAqJJHa4sB4kl-E_efcyFJ6rfV5mo4uKOc_Eq350TFp-RlVdz8QlENRzwnJS9qTJD5o1sKQZ5VfvNDzSGmlK9xr0TE8zpE09ooeIl6-kYvWtPlXGSNpu3_lS6Et3cH_bWxmoAQicFoP5lX0RRFkGkXdFzEhRYTvO5S90ECouWmZaLwiRR-vozkA8PN4jw8Tlj5ow",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "slika1",
+									"key": "file1",
 									"type": "file",
-									"src": "/C:/Users/Korisnik/Desktop/slika2.jpg"
+									"src": "/C:/Users/Filip/Desktop/vestacki-lovor-600x800.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{API_URL}}/api/user/1/ad/1/photo",
+							"raw": "{{API_URL}}/api/user/1/ad/8/photo",
 							"host": [
 								"{{API_URL}}"
 							],
@@ -516,7 +635,7 @@
 								"user",
 								"1",
 								"ad",
-								"1",
+								"8",
 								"photo"
 							]
 						}
@@ -608,6 +727,73 @@
 							"body": null
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"saptovicjelena@gmail.com\",\r\n    \"password\": \"Popokatepetl159\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/api/auth/user/login",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh auth token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/api/auth/user/refresh",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"user",
+								"refresh"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
