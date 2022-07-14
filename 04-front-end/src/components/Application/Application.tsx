@@ -29,9 +29,7 @@ function Application() {
           <Route path='/dashboard/ad/list' element={ <UserAdList /> } />
           <Route path='/dashboard/user/list' element={ <UserList /> } />
           <Route path='/dashboard/ad/add' element={ <AddAd /> } />
-          <Route path="/dashboard/ad/list" element={ <p>Nije rutirano...</p> } />
-
-
+          <Route path="/dashboard/ad/list" element={ <p>Nije rutrano</p> } />
         </Routes>
       </BrowserRouter>
     </Container>
