@@ -24,10 +24,65 @@ Aplikacija treba da omogući korisniku da može da postavlja oglas za prodaju cv
 
 ## Baza podataka
 
-...
+ ________       _____       _____
+|korisnik|+---E|oglas|+---E|slika|
+
+### user
+
+* user_id       INT        UN PK AI
+
+* username      VARCHAR    64 UQ
+
+* password_hash VARCHAR    128
+
+* is_active     TINYINT    1 UN 1
+
+
+### ad
+
+* ad_id         INT         UN PK AI
+
+* description   TEXT
+
+* expires_at    TIMESTAMP
+
+* price         DECIMAL     10,2 UN
+
+* flower_kind   VARCHAR     64
+
+* country       VARCHAR     64
+
+* lifespan      INT         UN
+
+* color         VARCHAR     64
+
+* user_id       INT         UN FK
+
+
+
+### photo
+
+
+* photo_id      INT         UN PK AI
+
+* name          VARCHAR     255
+
+* file_path     TEXT        UQ
+
+* ad_id         INT         UN FK
+
+
 
 ## Use-Case dijagrami
 
-...
+
+* Slika use-case dijagrama data u folderu dokumentacije.
+
 
 ### Uloge korisnika
+
+
+* Ulogovan korisnik može da: gleda sve oglase, gleda oglase odabranog korisnika, dodaje svoje oglase, menja i brise svoje oglase. Dodaje slike i briše slike iz oglasa.
+
+* Posetilac, odnosno korisnik koji nije ulogovan može da: gleda sve oglase, gleda oglase odabranog korisnika ili da se registruje (čime dobija privileije zvaničnog korisnika).
+
